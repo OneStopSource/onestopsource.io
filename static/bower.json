@@ -1,0 +1,17 @@
+{
+  "name": "onestopsource.io",
+  "version": "0.1.0",
+  "authors": [
+    "Tomáš Ehrlich <tomas.ehrlich@gmail.com>"
+  ],
+  "description": "One Stop Source homepage",
+  "license": "MIT",
+  "homepage": "http://onestopsource.io",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
