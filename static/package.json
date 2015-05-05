@@ -7,5 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tomáš Ehrlich",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.7.1",
+    "coffee-script": "^1.9.2",
+    "gulp": "^3.8.11",
+    "gulp-jade": "^1.0.0",
+    "gulp-util": "^3.0.4"
+  }
 }
