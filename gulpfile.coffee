@@ -25,4 +25,5 @@ gulp.task 'serve', ->
 
 gulp.task 'reload:jade', ['html'], reload
 
-gulp.task 'default', ['serve']
+gulp.task 'build', ['html']
+gulp.task 'default', ['build', 'serve']
