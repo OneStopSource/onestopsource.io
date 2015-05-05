@@ -1,3 +1,6 @@
+# AWS IAM credentials
+aws.json
+
 build/
 
 node_modules/

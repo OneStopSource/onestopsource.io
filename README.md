@@ -23,6 +23,18 @@ Contribute
 
 3. Commit changes and submit pull-request
 
+Publish to AWS S3 (authorization required)
+------------------------------------------
+
+1. Copy `aws.json.example` to `aws.json` and provide credentials for your
+   AWS IAM role.
+
+2. Build all static assets and publish them to S3:
+
+    ```
+    gulp publish
+    ```
+
 License
 -------
 

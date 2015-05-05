@@ -29,6 +29,12 @@ reloading and synchronization of multiple browsers:
     browserSync = require('browser-sync').create()
     reload      = browserSync.reload
 
+Publish static assets to AWS S3 bucket and load AWS IAM credentials:
+
+    s3 = require 'gulp-s3'
+    fs = require("fs")
+    awsCredentials = JSON.parse fs.readFileSync './aws.json'
+
 Tasks
 -----
 
@@ -37,6 +43,16 @@ and watches for changes. Use **build** task for one-time build.
 
     gulp.task 'build', ['html']
     gulp.task 'default', ['build', 'serve']
+
+**publish** -- Publish static assets to S3 (deploy to <http://onestopsource.io>).
+
+    gulp.task 'publish', ['build'], ->
+      options =
+        headers:
+          'Cache-Control': 'max-age=86400, no-transform, public'
+
+      gulp.src Destination + '/**'
+      .pipe s3 awsCredentials, options
 
 **html** -- Compile [Jade][] templates.
 
@@ -56,3 +72,4 @@ and watches for changes. Use **build** task for one-time build.
 **reload:jade** -- Reload browser after new html is compiled.
 
     gulp.task 'reload:jade', ['html'], reload
+

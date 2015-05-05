@@ -1,0 +1,6 @@
+{
+  "key": "<YOUR-AWS-KEY>",
+  "secret": "<YOUR-AWS-SECRET-KEY>",
+  "bucket": "onestopsource.io",
+  "region": "eu-west-1"
+}
