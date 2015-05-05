@@ -9,17 +9,17 @@ Contribute
 
 1. Setup development environment:
 
-	```
-	npm install -g gulp bower
-	npm install
-	bower install
-	```
+    ```
+    npm install -g gulp bower
+    npm install
+    bower install
+    ```
 
 2. Run *watcher* (it opens browser at http://localhost:3000):
 
-	```
-	gulp
-	```
+    ```
+    gulp
+    ```
 
 3. Commit changes and submit pull-request
 
