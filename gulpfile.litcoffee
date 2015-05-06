@@ -50,7 +50,7 @@ and watches for changes. Use **build** task for one-time build.
 
     gulp.task 'publish', ['build'], ->
       awsCredentials = JSON.parse fs.readFileSync './aws.json'
-      
+
       options =
         headers:
           'Cache-Control': 'max-age=86400, no-transform, public'

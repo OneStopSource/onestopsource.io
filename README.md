@@ -1,6 +1,8 @@
 OneStopSource.io homepage
 =========================
 
+[![Circle CI](https://circleci.com/gh/OneStopSource/onestopsource.io.svg?style=svg)](https://circleci.com/gh/OneStopSource/onestopsource.io)
+
 Static homepage of One Stop Source, independent developers.
 
 
