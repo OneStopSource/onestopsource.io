@@ -4,7 +4,7 @@
   "description": "One Stop Source homepage",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp ci"
   },
   "author": "Tomáš Ehrlich",
   "license": "MIT",
@@ -12,6 +12,7 @@
     "browser-sync": "^2.7.1",
     "coffee-script": "^1.9.2",
     "gulp": "^3.8.11",
+    "gulp-coffeelint": "^0.4.0",
     "gulp-jade": "^1.0.0",
     "gulp-s3": "^0.3.0",
     "gulp-util": "^3.0.4"

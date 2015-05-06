@@ -23,6 +23,8 @@ Dependencies
     gulp = require 'gulp'
     jade = require 'gulp-jade'
 
+    coffeelint = require 'gulp-coffeelint'
+
 Load [BrowserSync][] for serving static files, automatic
 reloading and synchronization of multiple browsers:
 
@@ -44,7 +46,8 @@ and watches for changes. Use **build** task for one-time build.
     gulp.task 'build', ['html']
     gulp.task 'default', ['build', 'serve']
 
-**publish** -- Publish static assets to S3 (deploy to <http://onestopsource.io>).
+**publish** -- Publish static assets to S3
+(deploy to <http://onestopsource.io>).
 
     gulp.task 'publish', ['build'], ->
       options =
@@ -64,12 +67,25 @@ and watches for changes. Use **build** task for one-time build.
 **serve** -- Start serving static files and watch for file changes.
 
     gulp.task 'serve', ->
-        browserSync.init
-          server:
-            baseDir: Destination
-        gulp.watch 'jade/**/*.jade', ['reload:jade']
+      browserSync.init
+        server:
+          baseDir: Destination
+      gulp.watch 'jade/**/*.jade', ['reload:jade']
 
 **reload:jade** -- Reload browser after new html is compiled.
 
     gulp.task 'reload:jade', ['html'], reload
 
+**ci** -- Run tests and code checks
+
+    gulp.task 'ci', ['lint:coffee']
+
+**lint:coffee** -- Check coffeescripts for coding style violations
+
+    gulp.task 'lint:coffee', ->
+      gulp.src [
+        'gulpfile.litcoffee'
+      ]
+      .pipe coffeelint()
+      .pipe coffeelint.reporter()
+      .pipe coffeelint.reporter 'fail'
