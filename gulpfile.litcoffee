@@ -35,7 +35,6 @@ Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
     s3 = require 'gulp-s3'
     fs = require("fs")
-    awsCredentials = JSON.parse fs.readFileSync './aws.json'
 
 Tasks
 -----
@@ -50,6 +49,8 @@ and watches for changes. Use **build** task for one-time build.
 (deploy to <http://onestopsource.io>).
 
     gulp.task 'publish', ['build'], ->
+      awsCredentials = JSON.parse fs.readFileSync './aws.json'
+      
       options =
         headers:
           'Cache-Control': 'max-age=86400, no-transform, public'
