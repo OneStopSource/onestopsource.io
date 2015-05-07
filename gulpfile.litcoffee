@@ -102,8 +102,13 @@ created and gulp doesn't exit on errors
 **html** -- Compile [Jade][] templates.
 
     gulp.task 'html', ->
+      options =
+        pretty: false
+        locals:
+          debug: Debug
+
       gulp.src 'jade/**/*.jade'
-      .pipe jade pretty: true
+      .pipe jade options
       .pipe ifElse !Debug, minify minifyHtml
       .pipe gulp.dest Destination
       .pipe reload stream: true
