@@ -38,12 +38,13 @@ Core:
     gulp = require 'gulp'
     ifElse = require 'gulp-if-else'
 
-Languages and processors:
+Languages and compilers:
 
     jade = require 'gulp-jade'
     sass = require 'gulp-sass'
+    autoprefixer = require 'gulp-autoprefixer'
 
-Optimalization and compression:
+Optimization and compression:
 
     minifyHtml = require 'gulp-minify-html'
     minifyCss = require 'gulp-minify-css'
@@ -55,8 +56,7 @@ Style checkers:
 
     coffeelint = require 'gulp-coffeelint'
 
-Load [BrowserSync][] for serving static files, automatic
-reloading and synchronization of multiple browsers:
+[BrowserSync][] development server:
 
     browserSync = require('browser-sync').create()
     reload      = browserSync.reload
@@ -123,11 +123,19 @@ created and gulp doesn't exit on errors
       .pipe reload stream: true
 
 *css* -- Compile [Sass][] files to CSS. Include source maps in debug mode.
+Note: You *really* need to generate sourcemaps twice. There's a bug in
+gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
+[issue](https://github.com/dlmanning/gulp-sass/pull/51#issuecomment-55730711).
 
     gulp.task 'css', ->
       gulp.src 'scss/onestopsource.scss'
       .pipe ifElse Debug, sourcemaps.init
       .pipe sass()
+      .pipe ifElse Debug, sourcemaps.write
+      .pipe ifElse Debug, () -> sourcemaps.init loadMaps: true  # must be lazy
+      .pipe autoprefixer
+        browsers: ['last 2 versions', '> 1%'],
+        cascade: false
       .pipe ifElse Debug, sourcemaps.write, minify minifyCss
       .pipe gulp.dest Destination.css
       .pipe reload stream: true
