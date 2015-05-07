@@ -24,6 +24,8 @@ Dependencies
     jade = require 'gulp-jade'
 
     coffeelint = require 'gulp-coffeelint'
+    bytediff = require 'gulp-bytediff'
+    minifyHTML = require 'gulp-minify-html'
 
 Load [BrowserSync][] for serving static files, automatic
 reloading and synchronization of multiple browsers:
@@ -63,6 +65,9 @@ and watches for changes. Use **build** task for one-time build.
     gulp.task 'html', ->
       gulp.src 'jade/**/*.jade'
       .pipe jade pretty: true
+      .pipe(bytediff.start())
+      .pipe(minifyHTML(opts))
+      .pipe(bytediff.stop())
       .pipe gulp.dest Destination
 
 

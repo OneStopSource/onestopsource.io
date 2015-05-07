@@ -12,8 +12,10 @@
     "browser-sync": "^2.7.1",
     "coffee-script": "^1.9.2",
     "gulp": "^3.8.11",
+    "gulp-bytediff": "^0.2.1",
     "gulp-coffeelint": "^0.4.0",
     "gulp-jade": "^1.0.0",
+    "gulp-minify-html": "^1.0.2",
     "gulp-s3": "^0.3.0",
     "gulp-util": "^3.0.4"
   }
