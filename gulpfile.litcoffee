@@ -11,8 +11,11 @@ OneStopSource.io gulp file
 - CSS is preprocesses using [Sass][]
 - [BrowserSync][] is used for development server
 
+Configuration:
 
-Define build destinations -- whole website is static build from jade templates
+    Debug = false
+
+Build destinations -- whole website is static build from jade templates
 and static files are inside `static` directory.
 
     Destination       = 'build'
@@ -21,13 +24,27 @@ and static files are inside `static` directory.
 Dependencies
 ------------
 
+Core:
+
     gulp = require 'gulp'
+    ifElse = require 'gulp-if-else'
+
+Languages and processors:
+
     jade = require 'gulp-jade'
     sass = require 'gulp-sass'
 
-    coffeelint = require 'gulp-coffeelint'
+Optimalization and compression:
+
+    minifyHtml = require 'gulp-minify-html'
+    minifyCss = require 'gulp-minify-css'
+    lazypipe = require 'lazypipe'
     bytediff = require 'gulp-bytediff'
-    minifyHTML = require 'gulp-minify-html'
+    sourcemaps = require 'gulp-sourcemaps'
+
+Style checkers:
+
+    coffeelint = require 'gulp-coffeelint'
 
 Load [BrowserSync][] for serving static files, automatic
 reloading and synchronization of multiple browsers:
@@ -38,7 +55,21 @@ reloading and synchronization of multiple browsers:
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
     s3 = require 'gulp-s3'
-    fs = require("fs")
+    fs = require 'fs'
+
+Helpers
+-------
+
+Pipe factory for minifying files which outputs the size difference of minified
+files.
+
+Usage: `.pipe minify minifyCss`
+
+    minify = (func) ->
+      lazypipe()
+      .pipe bytediff.start
+      .pipe func
+      .pipe bytediff.stop
 
 Tasks
 -----
@@ -47,7 +78,13 @@ The **default** task builds all static assets, runs local server at :3000
 and watches for changes. Use **build** task for one-time build.
 
     gulp.task 'build', ['html', 'css', 'files']
-    gulp.task 'default', ['build', 'serve']
+    gulp.task 'default', ['serve']
+
+**debug-mode** -- Enables debug mode: Minification is disabled, source maps are
+created and gulp doesn't exit on errors
+
+    gulp.task 'debug-mode', ->
+      Debug = true
 
 **publish** -- Publish static assets to S3
 (deploy to <http://onestopsource.io>).
@@ -67,36 +104,37 @@ and watches for changes. Use **build** task for one-time build.
     gulp.task 'html', ->
       gulp.src 'jade/**/*.jade'
       .pipe jade pretty: true
-      .pipe bytediff.start()
-      .pipe minifyHTML()
-      .pipe bytediff.stop()
+      .pipe ifElse !Debug, minify minifyHtml
       .pipe gulp.dest Destination
       .pipe reload stream: true
 
-*css* -- Compile [Sass][] files to CSS
+*css* -- Compile [Sass][] files to CSS. Include source maps in debug mode.
 
     gulp.task 'css', ->
       gulp.src 'scss/onestopsource.scss'
+      .pipe ifElse Debug, sourcemaps.init
       .pipe sass()
+      .pipe ifElse Debug, sourcemaps.write, minify minifyCss
       .pipe gulp.dest DestinationStatic + '/css'
       .pipe reload stream: true
 
 **files** -- Copy static files
 
     gulp.task 'files', ->
-      gulp.src 'files/**/*'
+      gulp.src 'files/**'
       .pipe gulp.dest Destination
 
 
 **serve** -- Start serving static files and watch for file changes.
 
-    gulp.task 'serve', ->
+    gulp.task 'serve', ['debug-mode', 'build'], ->
       browserSync.init
         server:
           baseDir: Destination
+
       gulp.watch 'jade/**/*.jade', ['html']
       gulp.watch 'scss/**/*.scss', ['css']
-      gulp.watch 'files/**/*', ['files']
+      gulp.watch 'files/**', ['files']
 
 **ci** -- Run tests and code checks
 
