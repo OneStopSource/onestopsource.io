@@ -18,8 +18,17 @@ Configuration:
 Build destinations -- whole website is static build from jade templates
 and static files are inside `static` directory.
 
-    Destination       = 'build'
-    DestinationStatic = 'build/static'
+    BuildRoot = 'build'
+
+    Destination =
+      all: BuildRoot + '/**'
+      html: BuildRoot
+      css: BuildRoot + '/static/css'
+
+    Source =
+      jade: 'jade/**/*.jade'
+      scss: 'scss/**/*.scss'
+      files: 'files/**'
 
 Dependencies
 ------------
@@ -96,7 +105,7 @@ created and gulp doesn't exit on errors
         headers:
           'Cache-Control': 'max-age=86400, no-transform, public'
 
-      gulp.src Destination + '/**'
+      gulp.src Destination.all
       .pipe s3 awsCredentials, options
 
 **html** -- Compile [Jade][] templates.
@@ -107,10 +116,10 @@ created and gulp doesn't exit on errors
         locals:
           debug: Debug
 
-      gulp.src 'jade/**/*.jade'
+      gulp.src Source.jade
       .pipe jade options
       .pipe ifElse !Debug, minify minifyHtml
-      .pipe gulp.dest Destination
+      .pipe gulp.dest Destination.html
       .pipe reload stream: true
 
 *css* -- Compile [Sass][] files to CSS. Include source maps in debug mode.
@@ -120,14 +129,14 @@ created and gulp doesn't exit on errors
       .pipe ifElse Debug, sourcemaps.init
       .pipe sass()
       .pipe ifElse Debug, sourcemaps.write, minify minifyCss
-      .pipe gulp.dest DestinationStatic + '/css'
+      .pipe gulp.dest Destination.css
       .pipe reload stream: true
 
 **files** -- Copy static files
 
     gulp.task 'files', ->
-      gulp.src 'files/**'
-      .pipe gulp.dest Destination
+      gulp.src Source.files
+      .pipe gulp.dest BuildRoot
 
 
 **serve** -- Start serving static files and watch for file changes.
@@ -135,11 +144,11 @@ created and gulp doesn't exit on errors
     gulp.task 'serve', ['debug-mode', 'build'], ->
       browserSync.init
         server:
-          baseDir: Destination
+          baseDir: BuildRoot
 
-      gulp.watch 'jade/**/*.jade', ['html']
-      gulp.watch 'scss/**/*.scss', ['css']
-      gulp.watch 'files/**', ['files']
+      gulp.watch Source.jade, ['html']
+      gulp.watch Source.scss, ['css']
+      gulp.watch Source.files, ['files']
 
 **ci** -- Run tests and code checks
 
