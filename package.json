@@ -2,17 +2,19 @@
   "name": "onestopsource.io",
   "version": "0.1.0",
   "description": "One Stop Source homepage",
+  "repository": "https://github.com/OneStopSource/onestopsource.io.git",
   "main": "index.js",
   "scripts": {
     "test": "gulp ci"
   },
-  "author": "Tomáš Ehrlich",
+  "author": "One Stop Source",
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.7.1",
     "coffee-script": "^1.9.2",
     "gulp": "^3.8.11",
     "gulp-coffeelint": "^0.4.0",
+    "gulp-install": "^0.4.0",
     "gulp-jade": "^1.0.0",
     "gulp-s3": "^0.3.0",
     "gulp-util": "^3.0.4"

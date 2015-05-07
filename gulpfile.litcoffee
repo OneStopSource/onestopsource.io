@@ -21,6 +21,7 @@ Dependencies
 ------------
 
     gulp = require 'gulp'
+    install = require 'gulp-install'
     jade = require 'gulp-jade'
 
     coffeelint = require 'gulp-coffeelint'
@@ -57,6 +58,12 @@ and watches for changes. Use **build** task for one-time build.
 
       gulp.src Destination + '/**'
       .pipe s3 awsCredentials, options
+
+*install* -- Install NPM and bower dependencies
+
+    gulp.task 'install', ->
+      gulp.src ['bower.json', 'package.json']
+      .pipe install()
 
 **html** -- Compile [Jade][] templates.
 
