@@ -158,9 +158,10 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
       gulp.watch Source.scss, ['css']
       gulp.watch Source.files, ['files']
 
-**ci** -- Run tests and code checks
+**ci** -- Check for any problems: Try to build all assets, run tests and check
+coding style.
 
-    gulp.task 'ci', ['lint:coffee']
+    gulp.task 'ci', ['build', 'lint:coffee']
 
 **lint:coffee** -- Check coffeescripts for coding style violations
 
