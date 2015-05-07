@@ -1,5 +1,6 @@
 [BrowserSync]: http://www.browsersync.io/
 [Jade]: http://jade-lang.com
+[Sass]: http://sass-lang.com
 
     'use strict'
 
@@ -7,7 +8,7 @@ OneStopSource.io gulp file
 ==========================
 
 - HTML is preprocessed using [Jade][]
-- CSS is postprocesses using `PostCSS`
+- CSS is preprocesses using [Sass][]
 - [BrowserSync][] is used for development server
 
 
@@ -22,6 +23,7 @@ Dependencies
 
     gulp = require 'gulp'
     jade = require 'gulp-jade'
+    sass = require 'gulp-sass'
 
     coffeelint = require 'gulp-coffeelint'
     bytediff = require 'gulp-bytediff'
@@ -44,7 +46,7 @@ Tasks
 The **default** task builds all static assets, runs local server at :3000
 and watches for changes. Use **build** task for one-time build.
 
-    gulp.task 'build', ['html', 'files']
+    gulp.task 'build', ['html', 'css', 'files']
     gulp.task 'default', ['build', 'serve']
 
 **publish** -- Publish static assets to S3
@@ -65,11 +67,19 @@ and watches for changes. Use **build** task for one-time build.
     gulp.task 'html', ->
       gulp.src 'jade/**/*.jade'
       .pipe jade pretty: true
-      .pipe(bytediff.start())
-      .pipe(minifyHTML(opts))
-      .pipe(bytediff.stop())
+      .pipe bytediff.start()
+      .pipe minifyHTML()
+      .pipe bytediff.stop()
       .pipe gulp.dest Destination
+      .pipe reload stream: true
 
+*css* -- Compile [Sass][] files to CSS
+
+    gulp.task 'css', ->
+      gulp.src 'scss/onestopsource.scss'
+      .pipe sass()
+      .pipe gulp.dest DestinationStatic + '/css'
+      .pipe reload stream: true
 
 **files** -- Copy static files
 
@@ -84,12 +94,9 @@ and watches for changes. Use **build** task for one-time build.
       browserSync.init
         server:
           baseDir: Destination
-      gulp.watch 'jade/**/*.jade', ['reload:jade']
+      gulp.watch 'jade/**/*.jade', ['html']
+      gulp.watch 'scss/**/*.scss', ['css']
       gulp.watch 'files/**/*', ['files']
-
-**reload:jade** -- Reload browser after new html is compiled.
-
-    gulp.task 'reload:jade', ['html'], reload
 
 **ci** -- Run tests and code checks
 

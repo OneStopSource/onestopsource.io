@@ -17,6 +17,7 @@
     "gulp-jade": "^1.0.0",
     "gulp-minify-html": "^1.0.2",
     "gulp-s3": "^0.3.0",
+    "gulp-sass": "^2.0.0",
     "gulp-util": "^3.0.4"
   }
 }
