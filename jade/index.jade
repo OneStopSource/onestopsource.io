@@ -17,15 +17,19 @@ html(lang="en")
         ga('send', 'pageview');
 
   body
-    .jumbotron
+    .jumbotron-full
       .container
         h1 One Stop Source
-        p.lead.
-          Independent team of full-stack developers
+        hr
+        p.lead Independent Team of Full-Stack Developers
         a.btn-hire(href="mailto:dev@onestopsource.io") Hire us
+
+      a.btn-more(href="#introduction")
+        i.fa.fa-angle-down.fa-fw
 
     .description
       .container
+        a(name="introduction")
         p.
           We are the one stop source of sharp solutions in software development.
           You can hire our team to create your application from scratch or help

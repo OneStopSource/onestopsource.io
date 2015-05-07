@@ -1,24 +1,95 @@
 @import "_bootstrap";
 
-.btn-hire {
-  @extend .btn;
-  @extend .btn-primary;
-  @extend .btn-lg;
+html, body {
+  height: 100%;
 }
 
+/*
+Modification of jumbotron: Centers all content to the middle of screen.
+
+Responsive: Vertical centering is removed completely on screens with small
+height. Also space above .btn-hire is reduced.
+
+.btn-more is "arrow in circle" link to inform user that there is another content
+below fold.
+*/
+.jumbotron-full {
+  @extend .jumbotron;
+
+  position: relative;
+  height: 100%;
+  padding: 0;
+  text-align: center;
+
+  @media (min-height: $screen-phone) {
+    .container {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translate(0, -50%);
+    }
+
+    .btn-hire {
+      margin-top: 4em;
+    }
+  }
+
+  hr {
+    width: 200px;
+    border-top: 3px double $brand-primary;
+  }
+
+  .lead {
+    font-size: 2em;
+  }
+
+  .btn-hire {
+    @extend .btn;
+    @extend .btn-primary;
+
+    padding: $padding-large-vertical 2*$padding-large-horizontal;
+    font-size: 1.6em;
+    line-height: 1.7;
+    border-radius: 0;
+  }
+
+  .btn-more {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    display: block;
+    margin-bottom: 1em;
+    font-size: 2em;
+    border: 1px solid $brand-primary;
+    border-radius: 100%;
+  }
+}
+
+/*
+Brief introduction to our team (one paragraph description)
+*/
 .description {
   @extend .lead;
 }
 
+/*
+List of services we offer.
+*/
 .offer-list {
   @extend .list-unstyled;
 }
 
+/*
+Team member cards.
+*/
 .team-member-list {
   @extend .list-unstyled;
   @extend .row;
 }
 
+// Large screen are large enough to fit all four cards.
 .team-member {
   @extend .col-sm-6;
   @extend .col-lg-3;
