@@ -4,12 +4,21 @@ html
     meta(charset='utf-8')
     title One Stop Source
 
+    script.
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-62652331-1', 'auto');
+      ga('send', 'pageview');
+
   body
     .jumbotron
       h1 One Stop Source
       p.lead.
         The independent team of full-stack web developers.
-      a.btn-hire Hire us
+      a.btn-hire(href="mailto:dev@onestopsource.io") Hire us
 
     .description
       p.
@@ -69,12 +78,3 @@ html
             between lines.
           p.
             He enjoys night life as a pure techno DJ.
-
-    script.
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-62652331-1', 'auto');
-      ga('send', 'pageview');
