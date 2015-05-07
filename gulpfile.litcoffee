@@ -42,7 +42,7 @@ Tasks
 The **default** task builds all static assets, runs local server at :3000
 and watches for changes. Use **build** task for one-time build.
 
-    gulp.task 'build', ['html']
+    gulp.task 'build', ['html', 'files']
     gulp.task 'default', ['build', 'serve']
 
 **publish** -- Publish static assets to S3
@@ -65,6 +65,14 @@ and watches for changes. Use **build** task for one-time build.
       .pipe jade pretty: true
       .pipe gulp.dest Destination
 
+
+**files** -- Copy static files
+
+    gulp.task 'files', ->
+      gulp.src 'files/**/*'
+      .pipe gulp.dest Destination
+
+
 **serve** -- Start serving static files and watch for file changes.
 
     gulp.task 'serve', ->
@@ -72,6 +80,7 @@ and watches for changes. Use **build** task for one-time build.
         server:
           baseDir: Destination
       gulp.watch 'jade/**/*.jade', ['reload:jade']
+      gulp.watch 'files/**/*', ['files']
 
 **reload:jade** -- Reload browser after new html is compiled.
 
