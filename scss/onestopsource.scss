@@ -1,0 +1,25 @@
+@import "_bootstrap";
+
+.btn-hire {
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .btn-lg;
+}
+
+.description {
+  @extend .lead;
+}
+
+.offer-list {
+  @extend .list-unstyled;
+}
+
+.team-member-list {
+  @extend .list-unstyled;
+  @extend .row;
+}
+
+.team-member {
+  @extend .col-sm-6;
+  @extend .col-lg-3;
+}

@@ -1,81 +1,92 @@
 doctype
 html
   head
+    title One Stop Source - Independent team of full-stack developers
     meta(charset='utf-8')
-    title One Stop Source
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
     link(rel="stylesheet", href="/static/css/onestopsource.css")
 
-    script.
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    if !debug
+      script.
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-62652331-1', 'auto');
-      ga('send', 'pageview');
+        ga('create', 'UA-62652331-1', 'auto');
+        ga('send', 'pageview');
 
   body
     .jumbotron
-      h1 One Stop Source
-      p.lead.
-        The independent team of full-stack web developers.
-      a.btn-hire(href="mailto:dev@onestopsource.io") Hire us
+      .container
+        h1 One Stop Source
+        p.lead.
+          Independent team of full-stack developers
+        a.btn-hire(href="mailto:dev@onestopsource.io") Hire us
 
     .description
-      p.
-        We are the one stop source of sharp solutions in software development.
-        You can hire our team to create your application from scratch or help
-        you to solve your specific problem on site.
+      .container
+        p.
+          We are the one stop source of sharp solutions in software development.
+          You can hire our team to create your application from scratch or help
+          you to solve your specific problem on site.
 
-    section
-      h2 What we do
-      ul
-        li
-          h3 Webapps development
-          p.
-            We have 5+ years of experience in design and development of fast,
-            reliable and high available websites.
-        li
-          h3 DevOps
-          p.
-            We analyze and design server infrasturcutre for client's needs.
-            Automatization of repetitive tasks is essense of our workflow – from
-            managing servers to deployment of applications.
-        li
-          h3 Mentoring
-          p.
-            We are able to pass our knowledge to your team or company. We
-            regularly speak at local meetups and workshops.
+    section.offer
+      .container
+        h2 What we do
+        ul.offer-list
+          li.offer-item
+            h3 Webapps development
+            p.
+              We have 5+ years of experience in design and development of fast,
+              reliable and high available websites.
+          li.offer-item
+            h3 DevOps
+            p.
+              We analyze and design server infrasturcutre for client's needs.
+              Automatization of repetitive tasks is essense of our workflow – from
+              managing servers to deployment of applications.
+          li.offer-item
+            h3 Mentoring
+            p.
+              We are able to pass our knowledge to your team or company. We
+              regularly speak at local meetups and workshops.
 
-    section
-      h2 Our team
-      ul
-        li
-          h3 Stanislav Komanec #[small @netman92]
-          p.
-            Our leader of innovation who folows the latest trends and bleeding
-            edge technologies.
-          p.
-            During off-season he manages his mini dam with rainbow trouts.
-        li
-          h3 Martin Matuszek #[small @naomak]
-          p.
-            Perfectionist, who always guarantees the hight quality of the
-            final product.
-          p.
-            He moves smoothly even when he dances swing.
-        li
-          h3 Tomáš Ehrlich #[small @tricoder]
-          p.
-            Optimist whose full-stack passion ranges from civil engineering
-            through coding to astrophysics.
-          p.
-            The sedentary life he complements with endurance sports and
-            triathlon.
-        li
-          h3 Martin Hořák #[small @styrax]
-          p.
-            The dark side guy preferring dungeons of backend stuff and code
-            between lines.
-          p.
-            He enjoys night life as a pure techno DJ.
+    section.team
+      .container
+        h2 Our team
+        ul.team-member-list
+          li.team-member
+            h3 Stanislav Komanec #[small @netman92]
+            p.
+              Our leader of innovation who folows the latest trends and bleeding
+              edge technologies.
+            p.
+              During off-season he manages his mini dam with rainbow trouts.
+
+          li.team-member
+            h3 Martin Matuszek #[small @naomak]
+            p.
+              Perfectionist, who always guarantees the hight quality of the
+              final product.
+            p.
+              He moves smoothly even when he dances swing.
+
+          li.team-member
+            h3 Tomáš Ehrlich #[small @tricoder]
+            p.
+              Optimist whose full-stack passion ranges from civil engineering
+              through coding to astrophysics.
+            p.
+              The sedentary life he complements with endurance sports and
+              triathlon.
+
+          li.team-member
+            h3 Martin Hořák #[small @styrax]
+            p.
+              The dark side guy preferring dungeons of backend stuff and code
+              between lines.
+            p.
+              He enjoys night life as a pure techno DJ.
+
+   //script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
