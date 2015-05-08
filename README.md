@@ -40,4 +40,4 @@ Publish to AWS S3 (authorization required)
 License
 -------
 
-MIT
+MIT, except files listed in `files/static/img/LICENSE`
