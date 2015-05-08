@@ -14,6 +14,7 @@ OneStopSource.io gulp file
 Configuration:
 
     Debug = false
+    DisableScssLint = false  # scss linter requires ruby gem
 
 Build destinations -- whole website is static build from jade templates
 and static files are inside `static` directory.
@@ -28,6 +29,7 @@ and static files are inside `static` directory.
     Source =
       jade: 'jade/**/*.jade'
       scss: 'scss/**/*.scss'
+      scss_main: 'scss/onestopsource.scss'
       files: 'files/**'
 
 Dependencies
@@ -36,6 +38,7 @@ Dependencies
 Core:
 
     gulp = require 'gulp'
+    gutil = require 'gulp-util'
     ifElse = require 'gulp-if-else'
 
 Languages and compilers:
@@ -55,6 +58,7 @@ Optimization and compression:
 Style checkers:
 
     coffeelint = require 'gulp-coffeelint'
+    scsslint = require 'gulp-scss-lint'
 
 [BrowserSync][] development server:
 
@@ -122,13 +126,13 @@ created and gulp doesn't exit on errors
       .pipe gulp.dest Destination.html
       .pipe reload stream: true
 
-*css* -- Compile [Sass][] files to CSS. Include source maps in debug mode.
+**css** -- Compile [Sass][] files to CSS. Include source maps in debug mode.
 Note: You *really* need to generate sourcemaps twice. There's a bug in
 gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
 [issue](https://github.com/dlmanning/gulp-sass/pull/51#issuecomment-55730711).
 
     gulp.task 'css', ->
-      gulp.src 'scss/onestopsource.scss'
+      gulp.src Source.scss_main
       .pipe ifElse Debug, sourcemaps.init
       .pipe sass()
       .pipe ifElse Debug, sourcemaps.write
@@ -155,13 +159,34 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
           baseDir: BuildRoot
 
       gulp.watch Source.jade, ['html']
-      gulp.watch Source.scss, ['css']
+      gulp.watch Source.scss, ['css', 'lint:scss']
       gulp.watch Source.files, ['files']
 
 **ci** -- Check for any problems: Try to build all assets, run tests and check
 coding style.
 
-    gulp.task 'ci', ['build', 'lint:coffee']
+    gulp.task 'ci', ['build', 'lint']
+
+**lint** – Run all linters
+
+    gulp.task 'lint', ['lint:scss', 'lint:coffee']
+
+**lint:sass** -- Check coding style of SCSS scripts (requires `scss-lint` ruby
+gem)
+
+    gulp.task 'lint:scss', ->
+      return if DisableScssLint
+
+      gulp.src Source.scss_main
+      .pipe scsslint config: 'scss_lint_config.yml'
+      .on 'error', (error) ->
+        msg = 'Missing ruby gem, run `gem install scss-lint`' +
+              ' to enable scss linter and restart gulp.'
+        gutil.log gutil.colors.yellow msg
+
+        DisableScssLint = true  # temporary disable linter
+        this.emit 'end'
+      .pipe ifElse !Debug, scsslint.failReporter
 
 **lint:coffee** -- Check coffeescripts for coding style violations
 

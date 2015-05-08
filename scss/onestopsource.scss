@@ -1,18 +1,17 @@
-@import "_bootstrap";
+@import 'bootstrap';
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
-/*
-Modification of jumbotron: Centers all content to the middle of screen.
-
-Responsive: Vertical centering is removed completely on screens with small
-height. Also space above .btn-hire is reduced.
-
-.btn-more is "arrow in circle" link to inform user that there is another content
-below fold.
-*/
+// Modification of jumbotron: Centers all content to the middle of screen.
+//
+// Responsive: Vertical centering is removed completely on screens with small
+// height. Also space above .btn-hire is reduced.
+//
+// .btn-more is "arrow in circle" link to inform user that there is another
+// content below fold.
 .jumbotron-full {
   @extend .jumbotron;
 
@@ -48,49 +47,45 @@ below fold.
     @extend .btn-primary;
 
     padding: $padding-large-vertical 2*$padding-large-horizontal;
+    border-radius: 0;
     font-size: 1.6em;
     line-height: 1.7;
-    border-radius: 0;
   }
 
   .btn-more {
     position: absolute;
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, 0);
 
     display: block;
     margin-bottom: 1em;
-    font-size: 2em;
+
     border: 1px solid $brand-primary;
     border-radius: 100%;
+
+    font-size: 2em;
+    transform: translate(-50%, 0);
   }
 }
 
-/*
-Brief introduction to our team (one paragraph description)
-*/
+// Brief introduction to our team (one paragraph description)
 .description {
   @extend .lead;
 }
 
-/*
-List of services we offer.
-*/
+// List of services we offer.
 .offer-list {
   @extend .list-unstyled;
 }
 
-/*
-Team member cards.
-*/
+// Team member cards.
 .team-member-list {
   @extend .list-unstyled;
-  @extend .row;
+  @include make-row();
 }
 
 // Large screen are large enough to fit all four cards.
 .team-member {
-  @extend .col-sm-6;
-  @extend .col-lg-3;
+  @include make-md-column(6);
+  @include make-lg-column(3);
 }
