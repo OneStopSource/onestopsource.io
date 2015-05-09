@@ -54,6 +54,8 @@ Optimization and compression:
     lazypipe = require 'lazypipe'
     bytediff = require 'gulp-bytediff'
     sourcemaps = require 'gulp-sourcemaps'
+    rev    = require 'gulp-rev'
+    collect = require 'gulp-rev-collector'
 
 Style checkers:
 
@@ -67,7 +69,9 @@ Style checkers:
 
 Utils
 
-    clean = require 'gulp-clean'
+    clean = require 'gulp-rimraf'
+    runSequence = require 'run-sequence'
+
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
     s3 = require 'gulp-s3'
@@ -93,7 +97,8 @@ Tasks
 The **default** task builds all static assets, runs local server at :3000
 and watches for changes. Use **build** task for one-time build.
 
-    gulp.task 'build', ['clean','html', 'css', 'files']
+    gulp.task 'build', ->
+      runSequence 'clean', 'html', 'css', 'files', 'revision', 'collect'
     gulp.task 'default', ['serve']
 
 **debug-mode** -- Enables debug mode: Minification is disabled, source maps are
@@ -157,8 +162,26 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
 **clean** -- Clean the build dir
 
     gulp.task 'clean', ->
-      gulp.src BuildRoot
-      .pipe clean()
+      gulp.src [BuildRoot + '/*', 'rev-manifest.json']
+      .pipe clean({read: false})
+
+**revision** changed static files browser inmediatelly loads
+
+    gulp.task 'revision', ->
+      if Debug
+        return
+      gulp.src BuildRoot + '/**/*.{css,js,jpg,gif,png}'
+      .pipe rev()
+      .pipe gulp.dest BuildRoot
+      .pipe rev.manifest()
+      .pipe gulp.dest '.'
+
+    gulp.task 'collect', ->
+      if Debug
+        return
+      gulp.src ['rev-manifest.json', BuildRoot + '/**/*.{html,xml,txt,json,css,js}']
+      .pipe collect()
+      .pipe gulp.dest BuildRoot
 
 **serve** -- Start serving static files and watch for file changes.
 
