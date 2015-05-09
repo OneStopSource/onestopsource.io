@@ -65,6 +65,9 @@ Style checkers:
     browserSync = require('browser-sync').create()
     reload      = browserSync.reload
 
+Utils
+
+    clean = require 'gulp-clean'
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
     s3 = require 'gulp-s3'
@@ -90,7 +93,7 @@ Tasks
 The **default** task builds all static assets, runs local server at :3000
 and watches for changes. Use **build** task for one-time build.
 
-    gulp.task 'build', ['html', 'css', 'files']
+    gulp.task 'build', ['clean','html', 'css', 'files']
     gulp.task 'default', ['serve']
 
 **debug-mode** -- Enables debug mode: Minification is disabled, source maps are
@@ -150,6 +153,12 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
       gulp.src Source.files
       .pipe gulp.dest BuildRoot
 
+
+**clean** -- Clean the build dir
+
+    gulp.task 'clean', ->
+      gulp.src BuildRoot
+      .pipe clean()
 
 **serve** -- Start serving static files and watch for file changes.
 
