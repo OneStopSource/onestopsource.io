@@ -42,6 +42,10 @@ Core:
     gutil = require 'gulp-util'
     ifElse = require 'gulp-if-else'
 
+Command line arguments:
+
+    argv = require('yargs').argv
+
 Languages and compilers:
 
     jade = require 'gulp-jade'
@@ -75,7 +79,7 @@ Utils
 
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
-    s3 = require 'gulp-s3'
+    awspublish = require 'gulp-awspublish'
     fs = require 'fs'
 
 Helpers
@@ -116,15 +120,42 @@ created and gulp doesn't exit on errors
 **publish** -- Publish static assets to S3
 (deploy to <http://onestopsource.io>).
 
-    gulp.task 'publish', ['release'], ->
-      awsCredentials = JSON.parse fs.readFileSync './aws.json'
+Task is configured to be used in CircleCI which stores AWS credentials in
+~/.aws/credentials. On local machine load from `aws.json`.
 
-      options =
-        headers:
-          'Cache-Control': 'max-age=86400, no-transform, public'
+    gulp.task 'publish', ['release'], ->
+      awsConfig =
+        params: {}
+        region: 'eu-west-1'
+
+      if !process.env.CIRCLE_CI
+        credentials = JSON.parse fs.readFileSync './aws.json'
+        if credentials.bucket or credentials.key
+          msg = 'Please update your aws.json according to aws.json.example'
+          gutil.log gutil.color.red msg
+          process.exit(1)
+
+        awsConfig.accessKeyId = credentials.accessKeyId
+        awsConfig.secretAccessKey = credentials.secretAccessKey
+
+      if argv.production
+        bucket = 'onestopsource.io'
+      else
+        bucket = 'dev.onestopsource.io'
+      awsConfig.params.Bucket = bucket
+
+      publisher = awspublish.create awsConfig
+
+      headers =
+        'Cache-Control': 'max-age=86400, no-transform, public'
+
+The task itself begins here. Publish files using `header` config, save uploaded
+files to cache (for speedup of consecutive upload) and report changes.
 
       gulp.src Destination.all
-      .pipe s3 awsCredentials, options
+      .pipe publisher.publish headers
+      .pipe publisher.cache()
+      .pipe awspublish.reporter()
 
 **html** -- Compile [Jade][] templates.
 

@@ -4,7 +4,11 @@ aws.json
 build/
 
 node_modules/
+.idea/
 
-.idea
+# Cache
+.awspublish-*
+
+
 
 rev-manifest.json
