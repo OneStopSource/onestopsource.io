@@ -2,11 +2,12 @@ dependencies:
   pre:
     - gem install scss-lint
   override:
+    - npm install -g gulp
     - npm install
 
 test:
   override:
-    - npm test
+    - gulp ci
 
 deployment:
   production:
