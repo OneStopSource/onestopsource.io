@@ -81,6 +81,7 @@ Utils
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
     awspublish = require 'gulp-awspublish'
+    awspublishRouter = require 'gulp-awspublish-router'
     fs = require 'fs'
 
 Helpers
@@ -148,14 +149,23 @@ Task is configured to be used in CircleCI which stores AWS credentials in
       publisher = awspublish.create awsConfig
 
       headers =
-        'Cache-Control': 'max-age=86400, no-transform, public'
+        cache:
+          cacheTime: 600
+        routes:
+          "static":
+            cacheTime: 630720000
+            gzip: true
+          "index\.html":
+            cacheTime: 0
+            gzip: true
+          "^.+$": "$&"
 
 The task itself begins here. Publish files using `header` config, save uploaded
 files to cache (for speedup of consecutive upload) and report changes.
 
       gutil.log gutil.colors.yellow "Publishing website at " + bucket
       gulp.src Destination.all
-      .pipe publisher.publish headers
+      .pipe publisher.publish()
       .pipe publisher.cache()
       .pipe awspublish.reporter()
 
