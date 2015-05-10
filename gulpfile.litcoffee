@@ -128,7 +128,7 @@ Task is configured to be used in CircleCI which stores AWS credentials in
         params: {}
         region: 'eu-west-1'
 
-      if !process.env.CIRCLE_CI
+      if !process.env.CIRCLECI
         credentials = JSON.parse fs.readFileSync './aws.json'
         if credentials.bucket or credentials.key
           msg = 'Please update your aws.json according to aws.json.example'
