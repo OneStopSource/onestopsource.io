@@ -132,7 +132,7 @@ Task is configured to be used in CircleCI which stores AWS credentials in
         credentials = JSON.parse fs.readFileSync './aws.json'
         if credentials.bucket or credentials.key
           msg = 'Please update your aws.json according to aws.json.example'
-          gutil.log gutil.color.red msg
+          gutil.log gutil.colors.red msg
           process.exit(1)
 
         awsConfig.accessKeyId = credentials.accessKeyId
@@ -152,6 +152,7 @@ Task is configured to be used in CircleCI which stores AWS credentials in
 The task itself begins here. Publish files using `header` config, save uploaded
 files to cache (for speedup of consecutive upload) and report changes.
 
+      gutil.log gutil.colors.yellow "Publishing website at " + bucket
       gulp.src Destination.all
       .pipe publisher.publish headers
       .pipe publisher.cache()
