@@ -133,11 +133,12 @@ body {
 .description {
   @extend .lead;
 
-  padding: 4 * $padding-large-vertical $padding-large-horizontal;
+  padding: 0 $padding-large-horizontal 30px;
   background-color: $jumbotron-bg;
   text-align: center;
 
   @media (min-width: $screen-sm-min) {
+    padding: 0 $padding-large-horizontal 100px;
     font-size: $font-size-base * 1.8;
   }
 }
@@ -159,6 +160,7 @@ body {
   @include make-lg-column(3);
 }
 
+// Footer
 footer {
   @include make-row();
   position: relative;
