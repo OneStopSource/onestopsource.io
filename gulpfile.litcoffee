@@ -165,6 +165,7 @@ files to cache (for speedup of consecutive upload) and report changes.
 
       gutil.log gutil.colors.yellow "Publishing website at " + bucket
       gulp.src Destination.all
+      .pipe awspublishRouter headers
       .pipe publisher.publish()
       .pipe publisher.cache()
       .pipe awspublish.reporter()
