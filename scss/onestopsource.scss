@@ -5,6 +5,42 @@ body {
   height: 100%;
 }
 
+%heading {
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.heading-underline {
+  width: 200px;
+  border-top: 6px double $brand-primary;
+
+  section & {
+    margin-bottom: 5em;
+  }
+}
+
+.section-heading-lg {
+  @extend %heading;
+
+  margin-top: 2em;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: 4 * $font-size-base;
+  }
+}
+
+%image-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-position: center;
+  background-size: cover;
+}
+
 // Modification of jumbotron: Centers all content to the middle of screen.
 //
 // Responsive: Vertical centering is removed completely on screens with small
@@ -20,6 +56,7 @@ body {
 
   position: relative;
   height: 100%;
+  margin-bottom: 0;
   padding: 0;
 
   color: $jumbotron-color;
@@ -32,7 +69,8 @@ body {
     width: 100%;
   }
 
-  @media (min-height: $screen-phone) {
+  // it's a 40px more than $screen-phone because of Android
+  @media (min-height: 520px) {
     .container {
       top: 50%;
       transform: translate(0, -50%);
@@ -44,25 +82,24 @@ body {
   }
 
   .background {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    @extend %image-background;
 
     background-image: url('/static/img/placeholder_head.jpg');
-    background-size: cover;
-
     opacity: 0.3;
   }
 
-  hr {
-    width: 200px;
-    border-top: 3px double $brand-primary;
+  h1 {
+    @extend %heading;
   }
 
-  .lead {
-    font-size: 2em;
+  @media (min-width: $screen-sm-min) {
+    h1 {
+      font-size: 6 * $font-size-base;
+    }
+
+    .lead {
+      font-size: 2em;
+    }
   }
 
   .btn-hire {
@@ -90,13 +127,19 @@ body {
     font-size: 2em;
     transform: translate(-50%, 0);
   }
-}
+} // end jumbotron
 
 // Brief introduction to our team (one paragraph description)
 .description {
   @extend .lead;
 
+  padding: 4 * $padding-large-vertical $padding-large-horizontal;
+  background-color: $jumbotron-bg;
   text-align: center;
+
+  @media (min-width: $screen-sm-min) {
+    font-size: $font-size-base * 1.8;
+  }
 }
 
 // List of services we offer.
@@ -114,4 +157,65 @@ body {
 .team-member {
   @include make-md-column(6);
   @include make-lg-column(3);
+}
+
+footer {
+  @include make-row();
+  position: relative;
+
+  margin-top: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  background-color: $footer-bg;
+  text-align: center;
+
+  &,
+  a,
+  a:hover {
+    color: $footer-color;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .background {
+    @extend %image-background;
+
+    background-image: url('/static/img/footer_brno.jpg');
+    background-position: 80%;
+    opacity: 0.6;
+  }
+
+  .contact {
+    @include make-sm-column(4);
+    font-size: 1.2 * $font-size-base;
+
+    @media (min-width: $screen-sm-min) {
+      font-weight: lighter;
+      font-size: 1.5 * $font-size-base;
+    }
+  }
+
+  .contact-header {
+    font-size: $font-size-h4;
+    text-transform: uppercase;
+  }
+
+  .links-social,
+  .passion,
+  .copyright {
+    @include make-sm-column(12);
+  }
+
+  .links-social {
+    @extend .list-inline;
+
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    font-size: 2 * $font-size-base;
+  }
 }

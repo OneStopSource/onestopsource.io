@@ -1,8 +1,13 @@
+- var emailHire = "dev@onestopsource.io"
+
 doctype
 html(lang="en")
   head
     title One Stop Source - Independent team of full-stack developers
+
     meta(charset='utf-8')
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
     link(rel="stylesheet", href="/static/css/onestopsource.css")
 
@@ -17,13 +22,14 @@ html(lang="en")
         ga('send', 'pageview');
 
   body
+    a(name="top")
     .jumbotron-full
       .background
       .container
         h1 One Stop Source
-        hr
+        hr.heading-underline
         p.lead Independent Team of Full-Stack Developers
-        a.btn-hire(href="mailto:dev@onestopsource.io") Hire us
+        a.btn-hire(href="mailto:" + emailHire) Hire us
 
       a.btn-more(href="#introduction")
         i.fa.fa-angle-down.fa-fw
@@ -32,13 +38,15 @@ html(lang="en")
       .container
         a(name="introduction")
         p.
-          We are the one stop source of sharp solutions in software development.
-          You can hire our team to create your application from scratch or help
-          you to solve your specific problem on site.
+          We are the #[strong one stop source] of sharp solutions in software
+          development. You can #[a(href="mailto:" + emailHire) hire] our team to
+          create your application #[strong from scratch] or help you to solve
+          your specific problem #[strong on site].
 
     section.offer
       .container
-        h2 What we do
+        h2.section-heading-lg What we do
+        hr.heading-underline
         ul.offer-list
           li.offer-item
             h3 Webapps development
@@ -59,7 +67,8 @@ html(lang="en")
 
     section.team
       .container
-        h2 Our team
+        h2.section-heading-lg Our team
+        hr.heading-underline
         ul.team-member-list
           li.team-member
             h3 Stanislav Komanec #[small @netman92]
@@ -93,5 +102,39 @@ html(lang="en")
               between lines.
             p.
               He enjoys night life as a pure techno DJ.
+
+  footer.background-brno
+    .background
+    .contact
+      h3.contact-header
+        i.fa.fa-fw.fa-phone
+        | Call us
+
+      a(href="call:+420608219889") +420 608 219 889
+
+    address.contact
+      h3.contact-header
+        i.fa.fa-fw.fa-map-marker
+        |We live in
+      | Brno, Czech Republic
+
+    .contact
+      h3.contact-header
+        i.fa.fa-fw.fa-envelope
+        |  Write us
+      a(href="mailto:" + emailHire) #{emailHire}
+
+    ul.links-social
+      li
+        i.fa.fa-fw.fa-twitter
+      li
+        a(href="https://www.linkedin.com/company/one-stop-source")
+          i.fa.fa-fw.fa-linkedin
+
+    p.copyright &copy; 2015 One Stop Source
+
+    p.passion.
+      Made with ♥ in Brno, Czech republic at 6th May 2015, around 19 pm, while
+      enjoying Chardonnay.
 
    //script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
