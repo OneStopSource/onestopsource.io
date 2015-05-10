@@ -25,6 +25,7 @@ and static files are inside `static` directory.
       all: BuildRoot + '/**'
       html: BuildRoot
       css: BuildRoot + '/static/css'
+      manifest: 'rev-manifest.json'
 
     Source =
       jade: 'jade/**/*.jade'
@@ -54,6 +55,8 @@ Optimization and compression:
     lazypipe = require 'lazypipe'
     bytediff = require 'gulp-bytediff'
     sourcemaps = require 'gulp-sourcemaps'
+    rev    = require 'gulp-rev'
+    collect = require 'gulp-rev-collector'
 
 Style checkers:
 
@@ -64,6 +67,11 @@ Style checkers:
 
     browserSync = require('browser-sync').create()
     reload      = browserSync.reload
+
+Utils
+
+    clean = require 'gulp-rimraf'
+    runSequence = require 'run-sequence'
 
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
@@ -93,6 +101,12 @@ and watches for changes. Use **build** task for one-time build.
     gulp.task 'build', ['html', 'css', 'files']
     gulp.task 'default', ['serve']
 
+**release** -- Clean build directory, build all assets and generate them unique
+filenames so they can be cached indefinitely.
+
+    gulp.task 'release', (callback) ->
+      runSequence 'clean', 'build', 'revision', 'collect', callback
+
 **debug-mode** -- Enables debug mode: Minification is disabled, source maps are
 created and gulp doesn't exit on errors
 
@@ -102,7 +116,7 @@ created and gulp doesn't exit on errors
 **publish** -- Publish static assets to S3
 (deploy to <http://onestopsource.io>).
 
-    gulp.task 'publish', ['build'], ->
+    gulp.task 'publish', ['release'], ->
       awsCredentials = JSON.parse fs.readFileSync './aws.json'
 
       options =
@@ -151,6 +165,35 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
       .pipe gulp.dest BuildRoot
 
 
+**clean** -- Clean the build dir
+
+    gulp.task 'clean', ->
+      gulp.src [BuildRoot, Destination.manifest]
+      .pipe clean read: false
+
+**revision** - Create revisions for all assets by appending hash to filename.
+
+    gulp.task 'revision', ->
+      gulp.src [
+        Destination.all,
+        '!**/*.html',
+        '!**/robots.txt',
+      ]
+      .pipe rev()
+      .pipe gulp.dest BuildRoot
+      .pipe rev.manifest Destination.manifest
+      .pipe gulp.dest '.'
+
+**collect** - Replace static file names with versioned ones.
+
+    gulp.task 'collect', ->
+      gulp.src [
+        Destination.manifest,
+        Destination.all + '**/*.html'
+      ]
+      .pipe collect()
+      .pipe gulp.dest BuildRoot
+
 **serve** -- Start serving static files and watch for file changes.
 
     gulp.task 'serve', ['debug-mode', 'build'], ->
@@ -165,7 +208,7 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
 **ci** -- Check for any problems: Try to build all assets, run tests and check
 coding style.
 
-    gulp.task 'ci', ['build', 'lint']
+    gulp.task 'ci', ['release', 'lint']
 
 **lint** – Run all linters
 
