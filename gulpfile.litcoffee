@@ -61,6 +61,7 @@ Optimization and compression:
     sourcemaps = require 'gulp-sourcemaps'
     rev    = require 'gulp-rev'
     collect = require 'gulp-rev-collector'
+    imageop = require 'gulp-image-optimization'
 
 Style checkers:
 
@@ -109,7 +110,7 @@ and watches for changes. Use **build** task for one-time build.
 filenames so they can be cached indefinitely.
 
     gulp.task 'release', (callback) ->
-      runSequence 'clean', 'build', 'revision', 'collect', callback
+      runSequence 'clean', 'build', 'revision', 'collect', 'images', callback
 
 **debug-mode** -- Enables debug mode: Minification is disabled, source maps are
 created and gulp doesn't exit on errors
@@ -224,6 +225,17 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
         BuildRoot + '/**/*.{html,css}'
       ]
       .pipe collect()
+      .pipe gulp.dest BuildRoot
+
+**images** - optimalization of images
+
+    gulp.task 'images', ->
+      gulp.src BuildRoot + '/**/*.{jpeg,gif,jpg,png}'
+      .pipe imageop {
+        optimizationLevel: 4
+        progressive: true
+        interlaced: true
+      }
       .pipe gulp.dest BuildRoot
 
 **serve** -- Start serving static files and watch for file changes.
