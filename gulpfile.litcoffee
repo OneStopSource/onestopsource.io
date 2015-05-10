@@ -189,7 +189,7 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
     gulp.task 'collect', ->
       gulp.src [
         Destination.manifest,
-        BuildRoot + '/**/*.html'
+        BuildRoot + '/**/*.{html,css}'
       ]
       .pipe collect()
       .pipe gulp.dest BuildRoot
