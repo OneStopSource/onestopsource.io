@@ -187,7 +187,6 @@ body {
 
 // Footer
 footer {
-  @include make-row();
   position: relative;
 
   margin-top: 2em;
@@ -216,6 +215,10 @@ footer {
     background-image: url('/static/img/footer_brno.jpg');
     background-position: 80%;
     opacity: 0.6;
+  }
+
+  .contacts {
+    @include make-row();
   }
 
   .contact {
