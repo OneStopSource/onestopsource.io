@@ -73,10 +73,11 @@ Style checkers:
     browserSync = require('browser-sync').create()
     reload      = browserSync.reload
 
-Utils
+Utils:
 
     clean = require 'gulp-rimraf'
     runSequence = require 'run-sequence'
+    plumber = require 'gulp-plumber'
 
 Publish static assets to AWS S3 bucket and load AWS IAM credentials:
 
@@ -97,6 +98,15 @@ Usage: `.pipe minify minifyCss`
       .pipe bytediff.start
       .pipe func
       .pipe bytediff.stop
+
+`gulp-plumber` configuration for catching and handling errors. Exit on error,
+but keep running in **debug-mode**.
+
+    defaultPlumber = ->
+      plumber
+        errorHandler: (err) ->
+          this.emit 'end'
+          process.exit(1) if !Debug
 
 Tasks
 -----
@@ -179,6 +189,7 @@ files to cache (for speedup of consecutive upload) and report changes.
           debug: Debug
 
       gulp.src Source.jade
+      .pipe defaultPlumber()
       .pipe jade options
       .pipe ifElse !Debug, minify minifyHtml
       .pipe gulp.dest Destination.html
@@ -191,6 +202,7 @@ gulp-sass, gulp-autprefixer or gulp-sourcemaps (dunno which one). See
 
     gulp.task 'css', ->
       gulp.src Source.scss_main
+      .pipe defaultPlumber()
       .pipe ifElse Debug, sourcemaps.init
       .pipe sass()
       .pipe ifElse Debug, sourcemaps.write
