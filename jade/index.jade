@@ -153,4 +153,19 @@ html(lang="en")
         Made with ♥ in Brno, Czech republic on 6th May 2015, around 19 pm, while
         enjoying Chardonnay.
 
-   //script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
+    script(src="https://code.jquery.com/jquery-2.1.4.min.js")
+    script.
+      $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+          if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+              $('html,body').animate({
+                scrollTop: target.offset().top
+              }, 500);
+              return false;
+            }
+          }
+        });
+      });
